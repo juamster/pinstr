@@ -1,22 +1,21 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
-      <h1>DASHBOARD</h1>
-    </div>
-    <div class="row">
-      <div class="col-4">
-        <div class="card p-2">
-          <form @submit.prevent="createPin">
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input class="form-control" type="text" v-model="newPin.title" />
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea class="form-control" v-model="newPin.description"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Create</button>
-          </form>
+    <div class="row mt-3">
+      <div class="col-2 mx-auto">
+        <div class="d-flex flex-column links">
+          <router-link :to="{name:'Dashboard.Profile'}">Profile</router-link>
+          <router-link :to="{name:'Dashboard.Pins'}">Pins</router-link>
+        </div>
+      </div>
+      <div class="col-8 mx-auto">
+        <div class="card shadow">
+          <div class="p-3">
+            <h4>{{routeName}}</h4>
+            <hr class="m-0 pb-0" />
+          </div>
+          <div class="card-body pt-1 m-0">
+            <router-view />
+          </div>
         </div>
       </div>
     </div>
@@ -26,19 +25,25 @@
 <script>
 export default {
   name: "Dashboard",
-  data() {
-    return {
-      newPin: {}
-    };
-  },
-  methods: {
-    createPin() {
-      this.$store.dispatch("createPin", this.newPin);
-      this.newPin = {};
+  computed: {
+    routeName() {
+      return this.$route.name.slice(this.$route.name.lastIndexOf(".") + 1);
     }
   }
 };
 </script>
 
-<style>
+<style scoped lang="scss">
+.links a {
+  transition: all 0.2s linear;
+  margin-bottom: 0.5rem;
+  padding: 0.35rem;
+  border-left: 3px solid transparent;
+  color: var(--secondary);
+  &.router-link-exact-active {
+    padding-left: 1rem;
+    border-left: 3px solid var(--primary);
+    color: var(--primary);
+  }
+}
 </style>

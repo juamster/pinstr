@@ -1,13 +1,15 @@
 <template>
-  <div class="card p-2 pin">
+  <div class="card p-2 pin shadow">
     <h4>{{pin.title}}</h4>
     <p>{{pin.description}}</p>
     <hr />
-    <div class="d-flex justify-content-end">
-      <div>
-        <i v-if="$auth.user.email == pin.creatorEmail">delete pin</i>
-      </div>
-      <user-avatar :user="pin.creator" height="40" rounded show-name left />
+    <div class="d-flex justify-content-between align-items-center">
+      <user-avatar :user="pin.creator" height="40" rounded show-name />
+      <i
+        class="fa fa-trash text-muted mr-2"
+        v-if="$auth.isAuthenticated && $auth.user.email == pin.creatorEmail"
+        @click="deletePin"
+      ></i>
     </div>
   </div>
 </template>
@@ -21,6 +23,15 @@ export default {
   },
   components: {
     UserAvatar
+  },
+  methods: {
+    async deletePin() {
+      let yes = this.$confirm("Delete the pin?");
+      if (!yes) {
+        return;
+      }
+      this.$store.dispatch("removePin");
+    }
   }
 };
 </script>

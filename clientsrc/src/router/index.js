@@ -17,9 +17,17 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
     beforeEnter: authGuard,
-    component: loadView("Dashboard.vue")
+    component: loadView("Dashboard.vue"),
+    children: [{
+      path: "",
+      name: "Dashboard.Profile",
+      component: loadView("Profile.vue")
+    }, {
+      path: "pins",
+      name: "Dashboard.Pins",
+      component: loadView("Pins.vue")
+    }]
   },
 ];
 

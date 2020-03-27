@@ -6,9 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    profile: {},
     pins: []
   },
   mutations: {
+    setProfile(state, profile) {
+      state.profile = profile;
+    },
     setPins(state, pins) {
       state.pins = pins;
     },
@@ -17,12 +21,24 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async getProfile({ commit }) {
+      let profile = await $resource.get("api/profile");
+      commit("setProfile", profile);
+    },
+
+    async updateProfile({ commit }, update) {
+      let profile = await $resource.put("api/profile", update);
+      commit("setProfile", profile);
+    },
+
+
     async getPins({ commit }) {
       let pins = await $resource.get("api/pins");
       commit("setPins", pins);
     },
     async createPin({ commit }, pinData) {
       let pin = await $resource.post("api/pins", pinData);
+      pin.creator = pinData.creator;
       commit("addPin", pin);
     }
 

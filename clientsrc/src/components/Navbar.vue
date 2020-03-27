@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
     <router-link class="navbar-brand" :to="{ name: 'Home' }">Pinstr</router-link>
     <button
       class="navbar-toggler"
@@ -14,12 +14,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
-        <li
-          class="nav-item"
-          v-if="$auth.isAuthenticated"
-          :class="{ active: $route.name == 'Dashboard' }"
-        >
-          <router-link class="nav-link" :to="{ name: 'Dashboard' }">My-Dashboard</router-link>
+        <li class="nav-item" v-if="$auth.isAuthenticated">
+          <router-link class="nav-link" :to="{ name: 'Dashboard.Profile' }">My-Dashboard</router-link>
         </li>
       </ul>
       <span class="navbar-text">
@@ -27,7 +23,7 @@
           <button class="btn btn-success" @click="login()">Login</button>
         </div>
         <div class="d-flex" v-else>
-          <user-avatar :user="$auth.user" show-name height="40" circle />
+          <user-avatar :user="profile" show-name height="40" circle />
           <button class="btn btn-danger" @click="logout">logout</button>
         </div>
       </span>
@@ -37,12 +33,21 @@
 
 <script>
 import UserAvatar from "./UserAvatar.vue";
+import { ConfigureResource } from "../store/resource";
 export default {
   name: "Navbar",
+  computed: {
+    profile() {
+      return this.$store.state.profile;
+    }
+  },
   methods: {
     async login() {
       try {
         await this.$auth.loginWithRedirect();
+        if (this.$auth.isAuthenticated) {
+          ConfigureResource(this);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -59,4 +64,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.router-link-active {
+  color: white !important;
+}
+</style>
