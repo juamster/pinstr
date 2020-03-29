@@ -22,4 +22,6 @@ export function ConfigureResource(appInstance) {
     appInstance.loading = true;
   };
   $resource.defaultHeaders.Authorization = appInstance.$auth.bearer;
+
+
 }

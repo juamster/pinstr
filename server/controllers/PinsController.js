@@ -8,7 +8,8 @@ export class PinsController extends BaseController {
     this.router
       .get("", this.getAll)
       .use(auth0Provider.getAuthorizedUserInfo)
-      .post("", this.create);
+      .post("", this.create)
+      .delete("/:id", this.delete)
   }
   async getAll(req, res, next) {
     try {
@@ -25,6 +26,17 @@ export class PinsController extends BaseController {
       res.send(pin);
     } catch (error) {
       next(error);
+    }
+  }
+
+  async delete(req, res, next) {
+    try {
+      // debugger;
+      console.log("in PinsController: going to delete with: ", req.params.id)
+      await pinsService.delete(req.params.id);
+      res.send("Deleted");
+    } catch (e) {
+      next(e);
     }
   }
 }

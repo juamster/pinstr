@@ -1,6 +1,6 @@
 <template>
   <div class="card p-2 pin shadow">
-    <h4>{{pin.title}}</h4>
+    <h4>The Title Is: {{pin.title}}</h4>
     <p>{{pin.description}}</p>
     <hr />
     <div class="d-flex justify-content-between align-items-center">
@@ -27,10 +27,13 @@ export default {
   methods: {
     async deletePin() {
       let yes = this.$confirm("Delete the pin?");
+      console.log("calling confirm");
       if (!yes) {
         return;
+      } else {
+        console.log("calling the delete in the store");
+        this.$store.dispatch("deletePin", this.pin);
       }
-      this.$store.dispatch("removePin");
     }
   }
 };

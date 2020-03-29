@@ -6,6 +6,7 @@ export const PinSchema = new Schema(
     title: { type: String, required: true },
     description: { type: String, required: true },
     creatorEmail: { type: String, required: true },
+    deleted: { type: Boolean, default: false },
     public: { type: Boolean, default: true }
   },
   { timestamps: true, toJSON: { virtuals: true } }

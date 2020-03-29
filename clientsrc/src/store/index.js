@@ -18,6 +18,14 @@ export default new Vuex.Store({
     },
     addPin(state, pin) {
       state.pins.push(pin);
+    },
+    deletePin(state, pin) {
+      console.log("deleting from the store id:", pin._id);
+      let i = state.pins.findIndex(p => p._id == pin._id);
+
+      if (i != -1) {
+        state.pins.splice(i, 1);
+      }
     }
   },
   actions: {
@@ -31,7 +39,6 @@ export default new Vuex.Store({
       commit("setProfile", profile);
     },
 
-
     async getPins({ commit }) {
       let pins = await $resource.get("api/pins");
       commit("setPins", pins);
@@ -40,6 +47,12 @@ export default new Vuex.Store({
       let pin = await $resource.post("api/pins", pinData);
       pin.creator = pinData.creator;
       commit("addPin", pin);
+    },
+    async deletePin({ commit }, pinData) {
+
+      await $resource.delete("api/pins/" + pinData._id);
+
+      commit("deletePin", pinData);
     }
 
   },
