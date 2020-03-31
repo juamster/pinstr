@@ -19,6 +19,9 @@ export default {
   computed: {
     pins() {
       return this.$store.state.pins;
+    },
+    favorites() {
+      return this.$store.state.favorites;
     }
   }
 };

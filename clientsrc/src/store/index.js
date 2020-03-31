@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { $resource } from "./resource";
+import favoritesStore from "./favoritesStore";
+import { toastSuccess } from "@bcwdev/quickvue";
 
 Vue.use(Vuex);
 
@@ -26,12 +28,18 @@ export default new Vuex.Store({
       if (i != -1) {
         state.pins.splice(i, 1);
       }
-    }
+    },
+
   },
   actions: {
+    async initUserData({ dispatch }) {
+      dispatch("getProfile");
+      dispatch("getFavorites");
+    },
     async getProfile({ commit }) {
       let profile = await $resource.get("api/profile");
       commit("setProfile", profile);
+
     },
 
     async updateProfile({ commit }, update) {
@@ -49,13 +57,13 @@ export default new Vuex.Store({
       commit("addPin", pin);
     },
     async deletePin({ commit }, pinData) {
-
       await $resource.delete("api/pins/" + pinData._id);
-
       commit("deletePin", pinData);
-    }
+    },
+
 
   },
   modules: {
+    favoritesStore
   }
 });

@@ -3,7 +3,8 @@ export const baseURL = window.location.host.includes("localhost")
   ? "http://localhost:3000"
   : "/";
 export const $resource = new LightPath({
-  baseURL
+  baseURL,
+  timeout: 999999
 });
 
 export function ConfigureResource(appInstance) {

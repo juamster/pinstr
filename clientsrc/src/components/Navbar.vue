@@ -45,9 +45,11 @@ export default {
     async login() {
       try {
         await this.$auth.loginWithRedirect();
-        if (this.$auth.isAuthenticated) {
-          ConfigureResource(this);
-        }
+        // NOTE: if you are loginWithPopup();
+        // if (this.$auth.isAuthenticated) {
+        //   ConfigureResource(this);
+        //   this.$store.dspatch("initUserData");
+        // }
       } catch (e) {
         console.error(e);
       }
